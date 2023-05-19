@@ -14,7 +14,7 @@ pipeline {
         }
         stage('Run Docker Container') {
             steps {
-                sh 'export PATH=$PATH:/usr/local/bin && docker run -d -p 6001:6001 my-image'
+                sh 'export PATH=$PATH:/usr/local/bin && docker run -d --name my_container -p 6001:6001 my-image'
             }
         }
     }
