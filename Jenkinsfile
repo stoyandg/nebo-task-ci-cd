@@ -14,7 +14,8 @@ pipeline {
             steps {
                 catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
                     sh 'export PATH=$PATH:/usr/local/bin && docker stop my_container'
-                    sh 'export PATH=$PATH:/usr/local/bin && docker rm my_container'
+                    sh 'export PATH=$PATH:/usr/local/bin && docker rm my_container',
+                    sh 'export PATH=$PATH:/usr/local/bin && docker image rm my_image'
                 }
             }
         }
@@ -35,12 +36,12 @@ pipeline {
         }
         stage('Build Docker Image') {
             steps {
-                sh 'export PATH=$PATH:/usr/local/bin && docker build -t my-image .'
+                sh 'export PATH=$PATH:/usr/local/bin && docker build -t my_image .'
             }
         }
         stage('Run Docker Container') {
             steps {
-                sh 'export PATH=$PATH:/usr/local/bin && docker run -d --name my_container -p 6001:6001 my-image'
+                sh 'export PATH=$PATH:/usr/local/bin && docker run -d --name my_container -p 6001:6001 my_image'
             }
         }
     }
