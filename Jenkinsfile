@@ -13,7 +13,7 @@ pipeline {
         stage('Stop previous container') {
             steps {
                 catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-                    sh 'export PATH=$PATH:/usr/local/bin && docker stop my_container'
+                    sh 'export PATH=$PATH:/usr/local/bin && docker stop my_container',
                     sh 'export PATH=$PATH:/usr/local/bin && docker rm my_container',
                     sh 'export PATH=$PATH:/usr/local/bin && docker image rm my_image'
                 }
