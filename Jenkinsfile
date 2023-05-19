@@ -10,7 +10,7 @@ pipeline {
                 }
             }
         }
-        stage('Checkout') {
+        stage('Clone Repository') {
             steps {
                 git branch: 'main', url: 'https://github.com/stoyandg/nebo-task-ci-cd.git'
             }
