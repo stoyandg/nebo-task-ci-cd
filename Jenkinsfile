@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/stoyandg/nebo-task-ci-cd.git'
+                git branch: 'main', url: 'https://github.com/stoyandg/nebo-task-ci-cd.git'
             }
         }
         stage('Build Docker Image') {
