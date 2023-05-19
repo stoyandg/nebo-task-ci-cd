@@ -4,7 +4,9 @@ pipeline {
     stages {
         stage('Stop previous container') {
             steps {
-                sh 'export PATH=$PATH:/usr/local/bin && docker stop my_container'
+                catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+                    sh 'export PATH=$PATH:/usr/local/bin && docker stop my_container'
+                }
             }
         }
         stage('Checkout') {
