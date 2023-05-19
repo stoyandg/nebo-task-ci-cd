@@ -23,14 +23,16 @@ pipeline {
             steps {
                 catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
                     script {
-                        def changes = scm.pollChanges()
-                        if (changes) {
+                        def changeset = checkout([$class: 'GitSCM']).poll()
+                            if (changeset != null && changeset.any()) {
                             input(
                                 id: 'manual-approval',
                                 message: 'Changes detected. Manual approval required to proceed.',
                                 ok: 'Proceed',
                                 submitterParameter: 'APPROVER'
                             )
+                        } else {
+                             echo 'No changes detected. Automatically building.'
                         }
                     }
                 }    
