@@ -9,10 +9,7 @@ pipeline {
         }
         stage('Build Docker Image') {
             steps {
-                sh 'export PATH=$PATH:/usr/local/bin'
-                script {
-                    dockerImage = docker.build "my-image:${env.BUILD_ID}"
-                }
+                sh 'export PATH=$PATH:/usr/local/bin && docker build -t my-image:${env.BUILD_ID} .'
             }
         }
         stage('Run Docker Container') {
