@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    options {
+        buildDiscarder(logRotator(numToKeepStr: '10'))
+    }
+
     triggers {
         pollSCM('* * * * *')
     }
@@ -21,21 +25,12 @@ pipeline {
         }
         stage('Check Changes') {
             steps {
-                catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-                    script {
-                        def changeset = checkout([$class: 'GitSCM']).poll()
-                            if (changeset != null && changeset.any()) {
-                            input(
-                                id: 'manual-approval',
-                                message: 'Changes detected. Manual approval required to proceed.',
-                                ok: 'Proceed',
-                                submitterParameter: 'APPROVER'
-                            )
-                        } else {
-                             echo 'No changes detected. Automatically building.'
-                        }
-                    }
-                }    
+                input(
+                    id: 'manual-approval',
+                    message: 'Manual approval is required.',
+                    ok: 'Proceed',
+                    submitterParameter: 'APPROVER'
+                )
             }
         }
         stage('Build Docker Image') {
