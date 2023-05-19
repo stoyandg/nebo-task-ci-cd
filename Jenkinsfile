@@ -9,13 +9,13 @@ pipeline {
         }
         stage('Build Docker Image') {
             steps {
-                sh 'export PATH=$PATH:/usr/local/bin && docker build -t my-image:${env.BUILD_ID} .'
+                sh 'export PATH=$PATH:/usr/local/bin && docker build -t my-image .'
             }
         }
         stage('Run Docker Container') {
             steps {
-                script {
-                    dockerImage.run("--name my-container")
+                sh {
+                    'export PATH=$PATH:/usr/local/bin && docker run -d -p 6001:6001 my-image'
                 }
             }
         }
