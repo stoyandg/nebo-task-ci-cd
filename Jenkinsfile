@@ -47,6 +47,7 @@ pipeline {
                             error("No relevant changes detected, skipping build.")
                         }
                     }
+                }    
             }
         }
         stage('Build Docker Image') {
