@@ -26,12 +26,30 @@ pipeline {
         }
         stage('Check Changes') {
             steps {
-                input(
-                    id: 'manual-approval',
-                    message: 'Manual approval is required.',
-                    ok: 'Proceed',
-                    submitterParameter: 'APPROVER'
-                )
+                script {
+                    def pyChanged = false
+                    for (changeLogSet in currentBuild.changeSets) {
+                        for (entry in changeLogSet) {
+                            for (affectedFile in entry.affectedFiles) {
+                                if (affectedFile.path == 'app.py') {
+                                    pyChanged = true
+                                    break
+                                }
+                            }
+                            if (pyChanged) {
+                                break
+                            }
+                        }
+                    }
+                    if (pyChanged) {
+                        input(
+                            id: 'manual-approval',
+                            message: 'Manual approval is required.',
+                            ok: 'Proceed',
+                            submitterParameter: 'APPROVER'
+                        )
+                    }
+                }
             }
         }
         stage('Build Docker Image') {
@@ -46,3 +64,4 @@ pipeline {
         }
     }
 }
+
