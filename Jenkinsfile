@@ -2,6 +2,11 @@ pipeline {
     agent any
 
     stages {
+        stage('Stop previous container') {
+            steps {
+                sh 'export PATH=$PATH:/usr/local/bin && docker stop my_container'
+            }
+        }
         stage('Checkout') {
             steps {
                 git branch: 'main', url: 'https://github.com/stoyandg/nebo-task-ci-cd.git'
