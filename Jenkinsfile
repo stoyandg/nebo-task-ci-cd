@@ -2,11 +2,6 @@ pipeline {
     agent any
 
     stages {
-        stage('Preparation') {
-            steps {
-                sh 'export PATH=$PATH:/usr/local/bin'
-            }
-        }
         stage('Checkout') {
             steps {
                 git branch: 'main', url: 'https://github.com/stoyandg/nebo-task-ci-cd.git'
@@ -14,6 +9,7 @@ pipeline {
         }
         stage('Build Docker Image') {
             steps {
+                sh 'export PATH=$PATH:/usr/local/bin'
                 script {
                     dockerImage = docker.build "my-image:${env.BUILD_ID}"
                 }
