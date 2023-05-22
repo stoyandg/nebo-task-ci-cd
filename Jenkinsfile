@@ -13,9 +13,7 @@ pipeline {
         stage('Stop previous container') {
             steps {
                 catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-                    sh 'export PATH=$PATH:/usr/local/bin && docker stop my_container'
-                    sh 'export PATH=$PATH:/usr/local/bin && docker rm my_container'
-                    sh 'export PATH=$PATH:/usr/local/bin && docker image rm my_image'
+                    sh 'export PATH=$PATH:/usr/local/bin && docker stop my_container | docker rm my_container | docker image rm my_image'
                 }
             }
         }
@@ -24,6 +22,7 @@ pipeline {
                 git branch: 'main', url: 'https://github.com/stoyandg/nebo-task-ci-cd.git'
             }
         }
+
         stage('Check Changes') {
             steps {
                 script {
